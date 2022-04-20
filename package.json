@@ -1,0 +1,16 @@
+{
+  "name": "Questions",
+  "version": "1.0.0",
+  "description": "Q&A system",
+  "main": "index.js",
+  "author": "MrDrawn",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.7",
+    "express": "^4.17.3",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.19.0"
+  }
+}

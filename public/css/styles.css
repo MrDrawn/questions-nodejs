@@ -1,0 +1,8 @@
+body {
+  background: #eee !important;
+}
+
+.navbar-brand {
+  cursor: pointer;
+  user-select: none;
+}
