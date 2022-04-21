@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const connection = require('./database/database');
 
 const Ask = require('./database/models/Ask');
+const Reply = require('./database/models/Reply');
 
 connection
   .authenticate()
@@ -24,9 +25,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.get('/', async (request, response) => {
-  const asks = await Ask.findAll({raw: true});
-
-  console.log(asks);
+  const asks = await Ask.findAll({raw: true, order: [['id', 'desc']]});
 
   response.render('index', {
     asks,
@@ -34,18 +33,53 @@ app.get('/', async (request, response) => {
 });
 
 app.get('/ask', (request, response) => {
-  response.render('ask');
+  return response.render('ask');
 });
 
-app.post('/create', (request, response) => {
+app.post('/create', async (request, response) => {
   const {title, ask} = request.body;
 
-  Ask.create({
+  await Ask.create({
     title,
     ask,
-  }).then(() => {
-    response.redirect('/');
   });
+
+  return response.redirect('/');
+});
+
+app.get('/ask/:id', async (request, response) => {
+  const {id} = request.params;
+
+  if (!id) return response.redirect('/');
+
+  const ask = await Ask.findOne({
+    where: {id},
+    raw: true,
+  });
+
+  if (!ask) return response.redirect('/');
+
+  const replies = await Reply.findAll({
+    where: {ask_id: id},
+    order: [['id', 'desc']],
+    raw: true,
+  });
+
+  return response.render('askOne', {
+    ask,
+    replies,
+  });
+});
+
+app.post('/reply/create', async (request, response) => {
+  const {message, askId} = request.body;
+
+  await Reply.create({
+    message,
+    ask_id: askId,
+  });
+
+  return response.redirect('/ask/' + askId);
 });
 
 app.listen(3000, error => {

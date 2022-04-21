@@ -1,0 +1,28 @@
+<%- include ('components/header'); %>
+<body>
+  <%- include ('components/navbar'); %>
+  <div class="container mt-3">
+    <div class="card">
+      <div class="card-header"><%= ask.title %></div>
+      <div class="card-body"><%= ask.ask %></div>
+      <div class="card-footer">
+        <form method="POST" action="/reply/create">
+          <input type="hidden" name="askId" id="askId" value="<%= ask.id %>" />
+          <label for="message">Message</label>
+          <textarea name="message" id="message" class="form-control" cols="30" rows="5"></textarea>
+          <button type="submit" class="btn btn-success mt-3">Reply</button>
+        </form>
+      </div>
+      <div class="card-body">
+        <h3>Replies</h3>
+        <hr />
+        <% replies.forEach(reply => { %>
+        <div class="card bg-primary mt-3 p-3" style="color: #fff">
+          <p><%= reply.message %></p>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include ('components/footer'); %>

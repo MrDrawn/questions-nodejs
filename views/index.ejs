@@ -11,7 +11,9 @@
           <div class="card-header"><%= ask.title %></div>
           <div class="card-body"><%= ask.ask %></div>
           <div class="card-footer">
-            <button class="btn btn-success">Reply</button>
+            <a href="/ask/<%= ask.id %>">
+              <button class="btn btn-success">Reply</button>
+            </a>
           </div>
         </div>
       </div>
